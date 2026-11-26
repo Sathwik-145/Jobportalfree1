@@ -4,7 +4,7 @@
 > A full-stack job portal built for students and freshers in India. Find jobs, apply instantly, upload your resume to get matched with relevant roles, prepare for interviews, take assessments, get certified, and message the admin directly — all in one place. **Free forever.**
 
 [![Cloudflare](https://img.shields.io/badge/Hosted%20on-Cloudflare-F38020?logo=cloudflare&logoColor=white)](https://workers.cloudflare.com/)
-[![CI](https://github.com/Sathwik-145/JobPortalFree/actions/workflows/ci.yml/badge.svg)](https://github.com/Sathwik-145/JobPortalFree/actions/workflows/ci.yml)
+[![CI](https://github.com/Sathwik-145/Jobportalfree1/actions/workflows/ci.yml/badge.svg)](https://github.com/Sathwik-145/Jobportalfree1/actions/workflows/ci.yml)
 [![Built with React](https://img.shields.io/badge/React-18-blue?logo=react)](https://react.dev/)
 [![Supabase](https://img.shields.io/badge/Backend-Supabase-green?logo=supabase)](https://supabase.com/)
 
@@ -14,7 +14,7 @@
 
 | | URL |
 |--|-----|
-| 📦 **GitHub Repo** | [github.com/Sathwik-145/JobPortalFree](https://github.com/Sathwik-145/JobPortalFree) |
+| 📦 **GitHub Repo** | [github.com/Sathwik-145/Jobportalfree1](https://github.com/Sathwik-145/Jobportalfree1) |
 | 🔑 **Admin Login** | `admin@jobportal.com` / `Admin@123456` |
 
 ---
@@ -911,7 +911,7 @@ VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_or_anon_key
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/Sathwik-145/JobPortalFree.git
+git clone https://github.com/Sathwik-145/Jobportalfree1.git
 cd JobPortalFree
 
 # 2. Install dependencies (Node 22+)
@@ -1026,7 +1026,7 @@ JobPortalFree/
 |---------|---------|
 | 📧 **General Email** | jobportalfreeofficial@gmail.com (reply within 5 hours) |
 | 💬 **In-app Messages** | Message icon in navbar → admin replies within 1 hour on the website |
-| 📦 **GitHub** | [github.com/Sathwik-145/JobPortalFree](https://github.com/Sathwik-145/JobPortalFree) |
+| 📦 **GitHub** | [github.com/Sathwik-145/Jobportalfree1](https://github.com/Sathwik-145/Jobportalfree1) |
 
 ---
 
