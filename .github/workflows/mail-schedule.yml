@@ -1,0 +1,20 @@
+name: Credential mail schedule
+# Backup trigger: GitHub runs this about every 5 minutes (can be delayed). For exact-minute sending,
+# also add a free cron-job.org job that opens SITE_URL/api/public/run-mail-schedule every minute.
+# Needs the repository variable SITE_URL and the repository secret CRON_SECRET
+# (GitHub -> Settings -> Secrets and variables -> Actions).
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping the mail runner
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$SITE_URL" ]; then echo "Set the SITE_URL repository variable first."; exit 0; fi
+          curl -fsS -H "Authorization: Bearer $CRON_SECRET" "$SITE_URL/api/public/run-mail-schedule" || true

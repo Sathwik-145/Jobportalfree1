@@ -1,0 +1,74 @@
+/* Student-only presentation. No global theme overrides. */
+.exam-student { color: hsl(var(--foreground)); font-family: Manrope, sans-serif; overflow-wrap: anywhere; }
+.exam-student *, .exam-student *::before, .exam-student *::after { box-sizing: border-box; }
+.exam-student h1, .exam-student h2, .exam-student h3 { font-family: Sora, sans-serif; letter-spacing: -.035em; }
+.exam-student button, .exam-student select, .exam-student a.btn-pill { min-height: 44px; }
+.exam-student button { touch-action: manipulation; }
+.exam-student button:focus-visible, .exam-student a:focus-visible, .exam-student input:focus-visible, .exam-student textarea:focus-visible, .exam-student select:focus-visible { outline: 3px solid hsl(var(--accent) / .65); outline-offset: 3px; }
+.exam-student button:disabled { cursor: not-allowed; }
+.exam-student input:not([type=checkbox]):not([type=radio]):not([type=range]), .exam-student textarea, .exam-student select { font-size: 16px; border-color: hsl(var(--border)); }
+.exam-student input[type=checkbox], .exam-student input[type=radio] { accent-color: hsl(var(--primary)); }
+.exam-home, .exam-entry, .exam-preflight { background: var(--gradient-hero); }
+.exam-home-hero, .exam-entry .portal-banner { background: var(--gradient-ink); color: hsl(var(--ink-foreground)); border-radius: 1.5rem; }
+.exam-home-hero p:not(.eyebrow) { color: hsl(var(--ink-foreground) / .78); }
+.exam-home-hero { position: relative; padding: clamp(1.5rem,4vw,3rem); border: 1px solid hsl(var(--ink-foreground) / .12); }
+.exam-home-hero::before { content: ''; position: absolute; left: 1.5rem; top: 0; width: 3rem; height: 3px; background: hsl(var(--accent)); border-radius: 0 0 1rem 1rem; }
+.exam-summary { display: grid; grid-template-columns: repeat(auto-fit,minmax(0,1fr)); gap: .75rem; margin: -1rem 0 2rem; }
+.exam-summary > div { border: 1px solid hsl(var(--border)); background: hsl(var(--card)); border-radius: 1.5rem; padding: 1rem; min-width: 0; }
+.exam-summary .eyebrow { display: block; font-size: .62rem; letter-spacing: .08em; color: hsl(var(--muted-foreground)); }
+.exam-summary strong { display: block; font-family: Sora,sans-serif; font-size: 1.8rem; line-height: 1.5; color: hsl(var(--primary)); }
+.exam-home h2 { margin-top: 1.5rem; }
+.exam-entry { padding-block: 2rem; }
+.exam-entry .portal-banner { padding: 2rem; }
+.exam-entry form button[type=submit] { min-height: 48px; border-radius: 999px; }
+.exam-entry form { text-align: left; }
+.exam-preflight { padding-bottom: calc(2rem + env(safe-area-inset-bottom)); }
+.exam-steps { width: 100%; padding: 1.25rem .75rem; margin-bottom: 1rem; border-bottom: 1px solid hsl(var(--border)); }
+.exam-steps ol { list-style: none; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: .25rem; margin: 0; padding: 0; }
+.exam-steps li { min-width: 0; position: relative; display: flex; flex-direction: column; align-items: center; gap: .5rem; color: hsl(var(--muted-foreground)); text-align: center; }
+.exam-steps li:not(:last-child)::after { content: ''; position: absolute; height: 1px; background: hsl(var(--border)); left: calc(50% + 1.125rem); right: calc(-50% + 1.125rem); top: 1rem; }
+.exam-steps li > span { display: grid; place-items: center; width: 2rem; height: 2rem; border: 1px solid hsl(var(--border)); border-radius: 999px; background: hsl(var(--card)); font-size: .75rem; font-weight: 700; }
+.exam-steps li[aria-current=step] { color: hsl(var(--primary)); font-weight: 700; }
+.exam-steps li[aria-current=step] > span { color: hsl(var(--primary-foreground)); border-color: hsl(var(--primary)); background: hsl(var(--primary)); box-shadow: 0 0 0 4px hsl(var(--primary) / .09); }
+.exam-steps small { font-size: .65rem; line-height: 1.4; }
+.exam-device-panel { background: var(--gradient-ink); color: hsl(var(--ink-foreground)); }
+.exam-device-panel p { color: hsl(var(--ink-foreground) / .7); }
+.exam-instructions-header { background: var(--gradient-ink); color: hsl(var(--ink-foreground)); height: auto; min-height: 5rem; padding: 1.25rem; border-radius: 1.5rem; }
+.exam-instructions-header h1 { font-size: 1.1rem; }
+.exam-instructions-header span, .exam-instructions-header svg { color: hsl(var(--ink-foreground) / .8); }
+.exam-primary-action { min-height: 52px; border-radius: 999px; }
+.exam-dialog { max-height: calc(100dvh - 2rem); overflow-y: auto; border-radius: 1.5rem; }
+.exam-live { height: 100dvh; min-width: 0; }
+.exam-live-header { min-height: 64px; height: auto; padding-block: .5rem; }
+.exam-live-header h1 { letter-spacing: -.02em; }
+.exam-live-body { min-width: 0; }
+.exam-live-actions { flex-wrap: wrap; }
+@media (max-width: 639px) {
+ .exam-home > header > div { gap: .5rem; }
+ .exam-home-hero h1 { font-size: 1.65rem; line-height: 1.25; }
+ .exam-home .flex-col > div, .exam-preflight .flex-1 { min-width: 0; }
+ .exam-preflight { align-items: flex-start; padding: 1rem .75rem calc(1rem + env(safe-area-inset-bottom)); }
+ .exam-preflight > div { max-width: 100%; }
+ .exam-primary-action { position: sticky; bottom: max(.75rem,env(safe-area-inset-bottom)); z-index: 10; box-shadow: 0 0 0 6px hsl(var(--background) / .95),0 8px 24px hsl(var(--primary) / .16); }
+ .exam-live-header { flex-wrap: wrap; gap: .5rem; padding: .5rem .75rem; }
+ .exam-live-header > div:first-child { flex-basis: 100%; }
+ .exam-live-header > div:last-child { width: 100%; justify-content: space-between; }
+ .exam-live-header select { flex: 1; max-width: 9rem; }
+ .exam-live-actions { width: 100%; }
+ .exam-live-actions > button { flex: 1; justify-content: center; }
+ .exam-dialog { width: calc(100vw - 1.5rem); }
+}
+@media (prefers-reduced-motion: reduce) {
+ .exam-student *, .exam-student *::before, .exam-student *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* Banner label stays readable on whatever panel colour the admin picks (beats the generic banner text rule). */
+.exam-home-hero p.eyebrow, .exam-entry .portal-banner p.eyebrow {
+  color: hsl(var(--ink-foreground));
+  background: hsl(var(--ink-foreground) / .07);
+  border-color: hsl(var(--ink-foreground) / .18);
+  opacity: 1;
+}
+/* The live "Submit Test" button keeps its warning colour inside the banner. */
+.exam-home-hero button.bg-destructive { background: hsl(var(--destructive)); color: hsl(var(--destructive-foreground)); }
+.exam-home-hero button.bg-destructive:hover { background: hsl(var(--destructive) / .9); }

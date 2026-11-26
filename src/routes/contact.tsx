@@ -1,0 +1,18 @@
+import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
+
+const Page = lazyRouteComponent(() => import("@/pages/ContactUs"));
+
+export const Route = createFileRoute("/contact")({
+  ssr: false,
+  head: () => ({
+    meta: [
+      { title: "Contact us | JobPortalFree" },
+      { name: "description", content: "Get in touch with the JobPortalFree team." },
+      { property: "og:title", content: "Contact us | JobPortalFree" },
+      { property: "og:description", content: "Get in touch with the JobPortalFree team." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: Page,
+});

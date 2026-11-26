@@ -1,0 +1,33 @@
+// Shared by browser and server (no imports)
+export interface MailTemplate { id: string; name: string; subject: string; body: string }
+export const TEMPLATE_VARS = '{{name}} {{email}} {{password}} {{loginUrl}} {{examTitle}} {{examStart}} {{examEnd}} {{examDuration}} {{examDate}} {{examTime}} {{scheduleLine}}';
+export const DEFAULT_TEMPLATES: MailTemplate[] = [
+  { id: 'sample-assessment', name: 'Sample assessment (with picture)', subject: 'Your {{examTitle}} assessment is ready',
+    body: '[image={{siteUrl}}/email/logo.png]Logo[/image]\n\n[image={{siteUrl}}/email/assessment.jpg]Assessment[/image]\n\nHi {{name}},\n\n**Your assessment "{{examTitle}}" is ready.**\n\n- Duration: {{examDuration}}\n- {{scheduleLine}}\n\n[highlight=info]Use a laptop with a stable internet connection and keep this tab open during the test.[/highlight]\n\nEmail: {{email}}\nPassword: {{password}}\n\n[button={{loginUrl}}]Start my assessment[/button]\n\nAll the best!\nThe exam team' },
+  { id: 'welcome-image', name: 'Welcome (with picture)', subject: 'Welcome {{name}}!',
+    body: '[image={{siteUrl}}/email/welcome-logo.jpg]Welcome[/image]\n\nHi {{name}},\n\n[color=primary]**Welcome aboard!**[/color] We are excited to have you with us.\n\n- Check your assigned tests anytime\n- Keep your login details private\n\n[button={{loginUrl}}]Sign in now[/button]\n\nRegards,\nThe exam team' },
+  { id: 'general-notice', name: 'General exam notice', subject: 'CodeXam assessment update',
+    body: 'Hi {{name}},\n\n**Your assessment update**\n\nPlease review these important points for your assessment:\n\n- Keep your login details private.\n- Check your assigned tests in CodeXam.\n- Keep a stable internet connection during your test.\n\n[highlight=info]Please contact the exam administrator if you need help with your assigned test.[/highlight]\n\nLogin page: {{loginUrl}}\n\nRegards,\nCodeXam team' },
+  { id: 'credentials', name: 'Login credentials', subject: 'Your CodeXam exam credentials',
+    body: 'Hi {{name}},\n\nYou have been approved for the CodeXam assessment.\n\nLogin page: {{loginUrl}}\nEmail: {{email}}\nPassword: {{password}}\n\n[highlight=highlight]Please keep these details private.[/highlight]\n\nAll the best!\nTeam JobPortalFree' },
+  { id: 'shortlisted', name: 'Congratulations — shortlisted', subject: 'Congratulations {{name}}! You are shortlisted for {{examTitle}}',
+    body: '[image={{siteUrl}}/email/celebration.jpg]Congratulations[/image]\n\nHi {{name}},\n\n[color=success]**Congratulations! 🎉 You have been shortlisted for the {{examTitle}}.**[/color]\n\nYou can take the exam from {{examStart}} to {{examEnd}} (duration: {{examDuration}}).\n\nLogin page: {{loginUrl}}\nEmail: {{email}}\nPassword: {{password}}\n\n[highlight=mint]Please log in a few minutes early and keep a stable internet connection.[/highlight]\n\nAll the best!\nTeam JobPortalFree' },
+  { id: 'reminder', name: 'Exam reminder', subject: 'Reminder: {{examTitle}} starts at {{examStart}}',
+    body: '[image={{siteUrl}}/email/reminder.jpg]Reminder[/image]\n\nHi {{name}},\n\nThis is a reminder that your exam "{{examTitle}}" is open from {{examStart}} to {{examEnd}}.\n\nLogin: {{loginUrl}}\nEmail: {{email}}\nPassword: {{password}}\n\n[highlight=peach]Good luck — you have got this![/highlight]\n\nTeam JobPortalFree' },
+  { id: 'invitation', name: 'Assessment invitation', subject: 'You are invited to the {{examTitle}} assessment',
+    body: 'Dear {{name}},\n\nWe are pleased to invite you to take the {{examTitle}} assessment.\n\n- Window: {{examStart}} – {{examEnd}}\n- Duration: {{examDuration}}\n\nSign in here: {{loginUrl}}\nUsername: {{email}}\nPassword: {{password}}\n\n[highlight=info]Please finish the assessment before the window closes.[/highlight]\n\nRegards,\nTeam JobPortalFree' },
+  { id: 'deadline', name: 'Deadline reminder', subject: 'Deadline approaching for {{examTitle}}',
+    body: '[image={{siteUrl}}/email/deadline.jpg]Deadline[/image]\n\nHi {{name}},\n\n[color=danger]**The deadline for "{{examTitle}}" is coming up soon.**[/color]\n\n- {{scheduleLine}}\n- Duration: {{examDuration}}\n\n[highlight=rose]Finish your attempt before {{examEnd}} — late submissions are not accepted.[/highlight]\n\n[button={{loginUrl}}]Open my assessment[/button]\n\nRegards,\nTeam JobPortalFree' },
+  { id: 'tips', name: 'Preparation tips', subject: 'How to prepare for {{examTitle}}',
+    body: '[image={{siteUrl}}/email/tips.jpg]Study tips[/image]\n\nHi {{name}},\n\n**Here are some quick tips for your {{examTitle}} assessment:**\n\n- Revise the key topics a day before\n- Sleep well and keep water nearby\n- Test your camera, mic and internet early\n\n[color=teal]A calm mind scores better than a rushed one.[/color]\n\n[highlight=sky]Your exam window: {{examStart}} – {{examEnd}}[/highlight]\n\nAll the best!\nTeam JobPortalFree' },
+  { id: 'certificate', name: 'Certificate / achievement', subject: 'Your {{examTitle}} certificate is ready',
+    body: '[image={{siteUrl}}/email/certificate.jpg]Certificate[/image]\n\nHi {{name}},\n\n[color=purple]**Well done!**[/color] You have successfully completed the {{examTitle}} assessment.\n\n[highlight=lavender]Your certificate is now available on your dashboard.[/highlight]\n\n[button={{loginUrl}}]View my certificate[/button]\n\nKeep shining!\nTeam JobPortalFree' },
+  { id: 'thankyou', name: 'Thank you', subject: 'Thank you, {{name}}!',
+    body: '[image={{siteUrl}}/email/thankyou.jpg]Thank you[/image]\n\nHi {{name}},\n\n**Thank you for taking the {{examTitle}} assessment.**\n\nWe truly appreciate your time and effort.\n\n[highlight=mint]We will share the next steps with you soon.[/highlight]\n\nWarm regards,\nTeam JobPortalFree' },
+];
+
+export const RESULT_VARS = '{{name}} {{email}} {{examTitle}} {{score}} {{maxScore}} {{percentage}} {{status}} {{sectionBreakdown}} {{improvements}}';
+export const DEFAULT_RESULT_TEMPLATE = {
+  subject: 'Your result for {{examTitle}}',
+  body: 'Hi {{name}},\n\nThank you for taking the {{examTitle}} assessment. Here is your result:\n\nScore: {{score}} / {{maxScore}} ({{percentage}}%)\nStatus: {{status}}\n\nSection-wise:\n{{sectionBreakdown}}\n\nAreas to improve:\n{{improvements}}\n\nKeep learning and all the best!\nTeam JobPortalFree',
+};
