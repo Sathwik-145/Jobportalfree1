@@ -15,7 +15,11 @@ import { MapPin, Clock, Briefcase, ExternalLink, ArrowLeft, Send } from "lucide-
 import SocialShare from "@/components/SocialShare";
 import { getJobSkills, getJobDescription } from "@/lib/jobFallback";
 import { formatDistanceToNow } from "date-fns";
-import LogoSpinner from "@/components/LogoSpinner";
+import MatchRing from "@/components/MatchRing";
+import { useMatchProfile } from "@/hooks/useMatchProfile";
+import { computeMatch, matchLabel } from "@/lib/jobMatch";
+import { CheckCircle2, CircleDashed } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { notifyAdmin } from '@/lib/notifyAdmin';
 
 const JobDetail = () => {
@@ -31,6 +35,7 @@ const JobDetail = () => {
   const { user, profile } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const matchProfile = useMatchProfile();
 
   useEffect(() => {
     if (id) {
@@ -104,7 +109,12 @@ const JobDetail = () => {
     return (
       <div className="min-h-screen bg-muted/30">
         <Navbar />
-        <div className="container py-24 flex items-center justify-center"><LogoSpinner size="lg" /></div>
+        <div className="container max-w-4xl space-y-4 py-8" aria-busy="true">
+          <Skeleton className="h-6 w-20" />
+          <Skeleton className="h-44 w-full rounded-2xl" />
+          <Skeleton className="h-28 w-full rounded-2xl" />
+          <Skeleton className="h-56 w-full rounded-2xl" />
+        </div>
       </div>
     );
   }
@@ -134,7 +144,12 @@ const JobDetail = () => {
             {/* Header - stack on mobile, side by side on desktop */}
             <div className="mb-6 rounded-2xl border border-primary/10 bg-gradient-to-br from-primary/10 via-card to-accent/30 p-5 sm:p-6">
               <div>
-                {job.company && <p className="mb-1 font-medium text-primary">{job.company}</p>}
+                {job.company && (
+                  <p className="mb-2 flex items-center gap-2 font-medium text-primary">
+                    <span aria-hidden className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-secondary text-base font-bold text-primary-foreground">{job.company.trim().charAt(0).toUpperCase()}</span>
+                    {job.company}
+                  </p>
+                )}
                 <h1 className="font-display text-xl sm:text-2xl font-bold text-foreground md:text-3xl">{job.title || "Untitled Position"}</h1>
                 <div className="mt-3 flex flex-wrap items-center gap-2 sm:gap-3 text-sm text-muted-foreground">
                   {job.location && (
@@ -207,8 +222,33 @@ const JobDetail = () => {
             {(() => {
               const sk: string[] = getJobSkills(job);
               const desc: string = getJobDescription(job);
+              const match = computeMatch(job, matchProfile);
               return (
                 <>
+                  {match && (
+                    <div className="mb-6 rounded-2xl border border-border/60 bg-card p-5 shadow-sm sm:p-6">
+                      <div className="flex items-center gap-4">
+                        <MatchRing score={match.score} size={64} />
+                        <div>
+                          <h3 className="font-semibold text-foreground">How you match</h3>
+                          <p className="text-sm text-muted-foreground">{matchLabel(match.score)} based on your profile skills and job alert preferences.</p>
+                        </div>
+                      </div>
+                      {(match.matchedSkills.length > 0 || match.missingSkills.length > 0) && (
+                        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                          <div>
+                            <p className="mb-2 flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-success"><CheckCircle2 className="h-3.5 w-3.5" /> You have</p>
+                            <div className="flex flex-wrap gap-1.5">{match.matchedSkills.length ? match.matchedSkills.map((k) => <Badge key={k} className="bg-success/10 text-success hover:bg-success/10">{k}</Badge>) : <span className="text-xs text-muted-foreground">No overlap yet</span>}</div>
+                          </div>
+                          <div>
+                            <p className="mb-2 flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground"><CircleDashed className="h-3.5 w-3.5" /> To learn</p>
+                            <div className="flex flex-wrap gap-1.5">{match.missingSkills.length ? match.missingSkills.map((k) => <Badge key={k} variant="outline">{k}</Badge>) : <span className="text-xs text-muted-foreground">Nothing missing</span>}</div>
+                          </div>
+                        </div>
+                      )}
+                      <p className="mt-4 text-xs text-muted-foreground">Improve your odds: <Link to="/resume-builder" className="text-primary underline">build a resume</Link> or <Link to="/job-alerts" className="text-primary underline">update your preferences</Link>.</p>
+                    </div>
+                  )}
                   {sk.length > 0 && (
                     <div className="mb-6 rounded-2xl border border-primary/10 bg-gradient-to-br from-primary/10 via-card to-accent/30 p-5 sm:p-6">
                       <h3 className="mb-2 font-semibold text-foreground">Skills Required</h3>

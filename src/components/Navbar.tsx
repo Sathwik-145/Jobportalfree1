@@ -169,6 +169,7 @@ const Navbar = () => {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => navigate("/profile")}><User className="mr-2 h-4 w-4" /> Profile</DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate("/my-applications")}><BookmarkCheck className="mr-2 h-4 w-4" /> My applications</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/resume-builder")}><FileText className="mr-2 h-4 w-4" /> Resume builder</DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate("/saved-jobs")}><FileText className="mr-2 h-4 w-4" /> Saved jobs</DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate("/job-alerts")}><BellRing className="mr-2 h-4 w-4" /> Job alerts</DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate("/admin/concepts")}>

@@ -28,6 +28,7 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as QuickStartRouteImport } from './routes/quick-start'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as ResumeBuilderRouteImport } from './routes/resume-builder'
 import { Route as ResumeTemplatesRouteImport } from './routes/resume-templates'
 import { Route as SavedJobsRouteImport } from './routes/saved-jobs'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
@@ -205,6 +206,11 @@ const RegisterRoute = RegisterRouteImport.update({
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResumeBuilderRoute = ResumeBuilderRouteImport.update({
+  id: '/resume-builder',
+  path: '/resume-builder',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResumeTemplatesRoute = ResumeTemplatesRouteImport.update({
@@ -653,6 +659,7 @@ export interface FileRoutesByFullPath {
   '/quick-start': typeof QuickStartRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/resume-builder': typeof ResumeBuilderRoute
   '/resume-templates': typeof ResumeTemplatesRoute
   '/saved-jobs': typeof SavedJobsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -757,6 +764,7 @@ export interface FileRoutesByTo {
   '/quick-start': typeof QuickStartRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/resume-builder': typeof ResumeBuilderRoute
   '/resume-templates': typeof ResumeTemplatesRoute
   '/saved-jobs': typeof SavedJobsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -862,6 +870,7 @@ export interface FileRoutesById {
   '/quick-start': typeof QuickStartRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/resume-builder': typeof ResumeBuilderRoute
   '/resume-templates': typeof ResumeTemplatesRoute
   '/saved-jobs': typeof SavedJobsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -968,6 +977,7 @@ export interface FileRouteTypes {
     | '/quick-start'
     | '/register'
     | '/reset-password'
+    | '/resume-builder'
     | '/resume-templates'
     | '/saved-jobs'
     | '/sitemap.xml'
@@ -1072,6 +1082,7 @@ export interface FileRouteTypes {
     | '/quick-start'
     | '/register'
     | '/reset-password'
+    | '/resume-builder'
     | '/resume-templates'
     | '/saved-jobs'
     | '/sitemap.xml'
@@ -1176,6 +1187,7 @@ export interface FileRouteTypes {
     | '/quick-start'
     | '/register'
     | '/reset-password'
+    | '/resume-builder'
     | '/resume-templates'
     | '/saved-jobs'
     | '/sitemap.xml'
@@ -1281,6 +1293,7 @@ export interface RootRouteChildren {
   QuickStartRoute: typeof QuickStartRoute
   RegisterRoute: typeof RegisterRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  ResumeBuilderRoute: typeof ResumeBuilderRoute
   ResumeTemplatesRoute: typeof ResumeTemplatesRoute
   SavedJobsRoute: typeof SavedJobsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -1472,6 +1485,13 @@ declare module '@tanstack/react-router' {
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resume-builder': {
+      id: '/resume-builder'
+      path: '/resume-builder'
+      fullPath: '/resume-builder'
+      preLoaderRoute: typeof ResumeBuilderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/resume-templates': {
@@ -2140,6 +2160,7 @@ const rootRouteChildren: RootRouteChildren = {
   QuickStartRoute: QuickStartRoute,
   RegisterRoute: RegisterRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  ResumeBuilderRoute: ResumeBuilderRoute,
   ResumeTemplatesRoute: ResumeTemplatesRoute,
   SavedJobsRoute: SavedJobsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,

@@ -43,6 +43,7 @@ const ResumeTemplates = () => {
           <p className="text-muted-foreground">
             Hand-picked, ATS-friendly templates to boost your applications. Download, customise, and ship.
           </p>
+          <a href="/resume-builder" className="mt-4 inline-flex"><Button className="gap-2"><FileText className="h-4 w-4" /> Or build one online and download a PDF</Button></a>
         </motion.div>
 
         {templates.length === 0 ? (

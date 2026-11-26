@@ -20,6 +20,7 @@ const COLUMNS = [
       { to: "/interview-prep", label: "Interview prep" },
       { to: "/mock-interviews", label: "Mock interviews" },
       { to: "/certifications", label: "Certifications" },
+      { to: "/resume-builder", label: "Resume builder" },
       { to: "/resume-templates", label: "Resume templates" },
     ],
   },

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from '@/lib/router-compat';
 import { supabase } from "@/lib/db-client";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,8 @@ import { Tables } from "@/integrations/supabase/types";
 import JobCard from "@/components/JobCard";
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/contexts/AuthContext";
+import { useMatchProfile } from "@/hooks/useMatchProfile";
+import { computeMatch } from "@/lib/jobMatch";
 import {
   Search, Briefcase, Users, TrendingUp, FileText, ArrowRight, MapPin, GraduationCap,
   Sparkles, ShieldCheck, BellRing, BookOpen, Code2, BarChart3, Palette, Megaphone,
@@ -62,6 +64,12 @@ const Index = () => {
   const [loc, setLoc] = useState("");
   const [exp, setExp] = useState("");
   const { user, isAdmin } = useAuth();
+  const matchProfile = useMatchProfile();
+  const recommended = useMemo(() => jobs
+    .map((job) => ({ job, match: computeMatch(job, matchProfile) }))
+    .filter((x) => x.match && x.match.score >= 40)
+    .sort((a, b) => b.match!.score - a.match!.score)
+    .slice(0, 3), [jobs, matchProfile]);
   const settings = useSiteSettings();
   const { settings: festivalSettings, festival } = useFestival();
   const duration = artworkDuration(festivalSettings, festival?.id);
@@ -326,7 +334,7 @@ const Index = () => {
             { to: "/exam-login", icon: Code2, title: "Exam portal", desc: "Coding, MCQ, fill-in and writing tests with instant reports.", span: "md:col-span-2" },
             { to: "/assessments", icon: BarChart3, title: "Skill assessments", desc: "Check where you stand.", span: "" },
             { to: "/interview-prep", icon: BookOpen, title: "Interview prep", desc: "Questions and tips.", span: "" },
-            { to: "/resume-templates", icon: FileText, title: "Resume templates", desc: "Ready to download.", span: "" },
+            { to: "/resume-builder", icon: FileText, title: "Resume builder", desc: "Build a PDF in minutes.", span: "" },
             { to: "/job-alerts", icon: BellRing, title: "Job alerts", desc: "Matches in your inbox.", span: "" },
             { to: "/certifications", icon: ShieldCheck, title: "Certifications", desc: "Boost your profile.", span: "md:col-span-2" },
           ].map((t) => (
@@ -343,6 +351,51 @@ const Index = () => {
             </Link>
           ))}
         </div>
+      </section>
+
+      {/* RECOMMENDED FOR YOU (signed-in users with skills or preferences) */}
+      {recommended.length > 0 && (
+        <section className="container px-4 pt-10 md:pt-14">
+          <div className="mb-6 flex items-center justify-between">
+            <div>
+              <h2 className="font-display text-2xl md:text-3xl font-bold flex items-center gap-2"><Sparkles className="h-6 w-6 text-primary" /> Recommended for you</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Matched to your skills and job alert preferences</p>
+            </div>
+            <Link to="/jobs"><Button variant="ghost" className="gap-1 text-sm">All matches <ArrowRight className="h-4 w-4" /></Button></Link>
+          </div>
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {recommended.map(({ job, match }) => (
+              <JobCard key={job.id} job={job} match={match} isSaved={savedJobs.includes(job.id)} onToggleSave={() => toggleSave(job.id)} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* HOW IT WORKS */}
+      <section className="container px-4 py-10 md:py-16">
+        <div className="mx-auto mb-8 max-w-2xl text-center">
+          <p className="eyebrow mb-3 justify-center">How it works</p>
+          <h2 className="font-display text-2xl font-bold md:text-4xl">From profile to offer in four steps</h2>
+        </div>
+        <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { icon: FileText, t: "Build your resume", d: "Use the free resume builder and download a clean PDF.", to: "/resume-builder" },
+            { icon: Sparkles, t: "Get matched", d: "Add your skills and see how well every job fits you.", to: "/profile" },
+            { icon: Briefcase, t: "Apply in one click", d: "Send applications straight from the job page.", to: "/jobs" },
+            { icon: CheckCircle2, t: "Track progress", d: "Follow each application from applied to selected.", to: "/my-applications" },
+          ].map((x, i) => (
+            <li key={x.t}>
+              <Link to={x.to} className="group block h-full rounded-2xl border border-border/60 bg-card p-5 shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg">
+                <div className="mb-4 flex items-center justify-between">
+                  <span className="grid h-11 w-11 place-items-center rounded-xl bg-primary/10 text-primary"><x.icon className="h-5 w-5" /></span>
+                  <span className="font-display text-3xl font-extrabold text-muted-foreground/30">0{i + 1}</span>
+                </div>
+                <h3 className="font-display text-lg font-semibold">{x.t}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{x.d}</p>
+              </Link>
+            </li>
+          ))}
+        </ol>
       </section>
 
       {/* FEATURED JOBS */}

@@ -8,6 +8,8 @@ import { Tables } from "@/integrations/supabase/types";
 import JobCard from "@/components/JobCard";
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/contexts/AuthContext";
+import { useMatchProfile } from "@/hooks/useMatchProfile";
+import { computeMatch } from "@/lib/jobMatch";
 import { Search, Briefcase, ChevronLeft, ChevronRight } from "lucide-react";
 
 const PAGE_SIZE = 12;
@@ -18,10 +20,14 @@ const Jobs = () => {
   const [search, setSearch] = useState(searchParams.get("q") || "");
   const [jobType, setJobType] = useState("all");
   const [expLevel, setExpLevel] = useState("all");
-  const [sortBy, setSortBy] = useState<"newest" | "oldest" | "salary" | "title">("newest");
+  const [sortBy, setSortBy] = useState<"newest" | "oldest" | "salary" | "title" | "match">("newest");
   const [page, setPage] = useState(1);
   const [savedJobs, setSavedJobs] = useState<string[]>([]);
   const { user } = useAuth();
+  const matchProfile = useMatchProfile();
+  const matches = useMemo(() => new Map(jobs.map((j) => [j.id, computeMatch(j, matchProfile)] as const)), [jobs, matchProfile]);
+  const canMatch = Array.from(matches.values()).some(Boolean);
+  useEffect(() => { if (canMatch) setSortBy((s) => (s === "newest" ? "match" : s)); }, [canMatch]);
 
   useEffect(() => {
     fetchJobs();
@@ -66,13 +72,14 @@ const Jobs = () => {
     const sorted = [...f];
     if (sortBy === "newest") sorted.sort((a, b) => +new Date(b.created_at) - +new Date(a.created_at));
     if (sortBy === "oldest") sorted.sort((a, b) => +new Date(a.created_at) - +new Date(b.created_at));
+    if (sortBy === "match") sorted.sort((a, b) => (matches.get(b.id)?.score ?? -1) - (matches.get(a.id)?.score ?? -1) || +new Date(b.created_at) - +new Date(a.created_at));
     if (sortBy === "title") sorted.sort((a, b) => (a.title || "").localeCompare(b.title || ""));
     if (sortBy === "salary") {
       const num = (s: string | null) => parseInt(String(s || "").replace(/[^0-9]/g, "")) || 0;
       sorted.sort((a, b) => num(b.salary_range) - num(a.salary_range));
     }
     return sorted;
-  }, [jobs, search, jobType, expLevel, sortBy]);
+  }, [jobs, search, jobType, expLevel, sortBy, matches]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const pageItems = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -128,6 +135,7 @@ const Jobs = () => {
           <Select value={sortBy} onValueChange={(v: any) => setSortBy(v)}>
             <SelectTrigger className="w-44 bg-card"><SelectValue placeholder="Sort" /></SelectTrigger>
             <SelectContent>
+              {canMatch && <SelectItem value="match">Best match</SelectItem>}
               <SelectItem value="newest">Newest first</SelectItem>
               <SelectItem value="oldest">Oldest first</SelectItem>
               <SelectItem value="salary">Highest salary</SelectItem>
@@ -144,7 +152,7 @@ const Jobs = () => {
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
               {pageItems.map((job) => (
-                <JobCard key={job.id} job={job} isSaved={savedJobs.includes(job.id)} onToggleSave={() => toggleSave(job.id)} />
+                <JobCard key={job.id} job={job} isSaved={savedJobs.includes(job.id)} onToggleSave={() => toggleSave(job.id)} match={matches.get(job.id) ?? null} />
               ))}
             </div>
 

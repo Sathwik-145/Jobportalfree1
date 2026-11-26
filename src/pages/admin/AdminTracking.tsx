@@ -9,6 +9,7 @@ import { formatDistanceToNow } from "date-fns";
 import { Search, ArrowRight, FileText, Users, TrendingUp, CheckCircle2, XCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import LogoSpinner from "@/components/LogoSpinner";
+import { normalizeStatus } from "@/lib/applicationStatus";
 import { SAMPLE_APPLICATIONS } from "@/lib/sampleApplications";
 
 interface AppRow {
@@ -26,6 +27,7 @@ const STAGES = [
   { key: "applied", label: "Applied", color: "border-primary/40 bg-primary/5", badge: "bg-primary/10 text-primary" },
   { key: "reviewed", label: "Reviewed", color: "border-accent/40 bg-accent/5", badge: "bg-accent/10 text-accent-foreground" },
   { key: "shortlisted", label: "Shortlisted", color: "border-secondary/40 bg-secondary/5", badge: "bg-secondary/10 text-secondary" },
+  { key: "interview", label: "Interview", color: "border-warning/40 bg-warning/5", badge: "bg-warning/15 text-warning" },
   { key: "selected", label: "Selected", color: "border-success/40 bg-success/5", badge: "bg-success/10 text-success" },
   { key: "rejected", label: "Rejected", color: "border-destructive/40 bg-destructive/5", badge: "bg-destructive/10 text-destructive" },
 ];
@@ -77,7 +79,7 @@ const AdminTracking = () => {
   const grouped = useMemo(() => {
     const g: Record<string, AppRow[]> = {};
     STAGES.forEach((s) => g[s.key] = []);
-    filtered.forEach((a) => { if (g[a.status]) g[a.status].push(a); });
+    filtered.forEach((a) => { const k = normalizeStatus(a.status); if (g[k]) g[k].push(a); });
     return g;
   }, [filtered]);
 
@@ -135,7 +137,7 @@ const AdminTracking = () => {
         <div className="py-12 flex items-center justify-center"><LogoSpinner size="md" /></div>
 
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
           {STAGES.map((stage) => (
             <div key={stage.key} className={`rounded-xl border-2 ${stage.color} p-3 min-h-[400px]`}>
               <div className="flex items-center justify-between mb-3 px-1">
@@ -161,10 +163,10 @@ const AdminTracking = () => {
                         {app.resume_url && (
                           <a href={app.resume_url} target="_blank" rel="noreferrer" className="text-[10px] text-primary underline shrink-0">Resume</a>
                         )}
-                        <Select value={app.status} onValueChange={(v) => updateStatus(app.id, v)}>
+                        <Select value={normalizeStatus(app.status)} onValueChange={(v) => updateStatus(app.id, v)}>
                           <SelectTrigger className="h-7 text-[10px] ml-auto w-auto gap-1 px-2"><ArrowRight className="w-3 h-3" /> Move</SelectTrigger>
                           <SelectContent>
-                            {STAGES.filter((s) => s.key !== app.status).map((s) => (
+                            {STAGES.filter((s) => s.key !== normalizeStatus(app.status)).map((s) => (
                               <SelectItem key={s.key} value={s.key} className="text-xs">{s.label}</SelectItem>
                             ))}
                           </SelectContent>

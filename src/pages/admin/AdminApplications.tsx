@@ -1,3 +1,4 @@
+import { normalizeStatus } from "@/lib/applicationStatus";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/db-client";
 import { Badge } from "@/components/ui/badge";
@@ -73,7 +74,7 @@ const AdminApplications = () => {
                     <p className="text-xs text-muted-foreground">{app.jobs?.company} • {formatDistanceToNow(new Date(app.created_at), { addSuffix: true })}</p>
                   </div>
                   <div className="flex items-center justify-between gap-2">
-                    <Select value={app.status} onValueChange={(v) => updateStatus(app.id, v)}>
+                    <Select value={normalizeStatus(app.status)} onValueChange={(v) => updateStatus(app.id, v)}>
                       <SelectTrigger className="w-36">
                         <Badge className={statusColors[app.status] || ""}>{app.status}</Badge>
                       </SelectTrigger>
@@ -81,6 +82,8 @@ const AdminApplications = () => {
                         <SelectItem value="applied">Applied</SelectItem>
                         <SelectItem value="reviewed">Reviewed</SelectItem>
                         <SelectItem value="shortlisted">Shortlisted</SelectItem>
+                        <SelectItem value="interview">Interview</SelectItem>
+                        <SelectItem value="selected">Selected</SelectItem>
                         <SelectItem value="rejected">Rejected</SelectItem>
                       </SelectContent>
                     </Select>
@@ -122,7 +125,7 @@ const AdminApplications = () => {
                       {formatDistanceToNow(new Date(app.created_at), { addSuffix: true })}
                     </td>
                     <td className="p-3">
-                      <Select value={app.status} onValueChange={(v) => updateStatus(app.id, v)}>
+                      <Select value={normalizeStatus(app.status)} onValueChange={(v) => updateStatus(app.id, v)}>
                         <SelectTrigger className="w-32">
                           <Badge className={statusColors[app.status] || ""}>{app.status}</Badge>
                         </SelectTrigger>
@@ -130,6 +133,8 @@ const AdminApplications = () => {
                           <SelectItem value="applied">Applied</SelectItem>
                           <SelectItem value="reviewed">Reviewed</SelectItem>
                           <SelectItem value="shortlisted">Shortlisted</SelectItem>
+                        <SelectItem value="interview">Interview</SelectItem>
+                        <SelectItem value="selected">Selected</SelectItem>
                           <SelectItem value="rejected">Rejected</SelectItem>
                         </SelectContent>
                       </Select>
