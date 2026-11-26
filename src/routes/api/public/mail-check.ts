@@ -38,7 +38,7 @@ export const Route = createFileRoute('/api/public/mail-check')({
             const t = await acc.text();
             let msg = t; try { msg = JSON.parse(t).message || t; } catch {}
             problems.push(`Brevo refused the key [${acc.status}]: ${msg}`);
-            if (/ip/i.test(msg)) problems.push('Brevo blocks unknown IP addresses. In Brevo → Settings → Security → Authorised IPs, turn off IP blocking (Vercel uses changing IPs).');
+            if (/ip/i.test(msg)) problems.push('Brevo blocks unknown IP addresses. In Brevo → Settings → Security → Authorised IPs, turn off IP blocking (Cloudflare Workers use changing IPs).');
           } else {
             const a = await acc.json().catch(() => ({}));
             account = a?.email || 'connected';

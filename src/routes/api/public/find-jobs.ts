@@ -48,7 +48,7 @@ export const Route = createFileRoute('/api/public/find-jobs')({
     let input: z.infer<typeof schema>;
     try { input = schema.parse(await request.json()); } catch { return Response.json({ error: 'Choose between 4 and 30 jobs' }, { status: 400 }); }
     const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) return Response.json({ error: 'Add GEMINI_API_KEY to the server settings (Vercel) to search the web for jobs.' }, { status: 503 });
+    if (!apiKey) return Response.json({ error: 'Add GEMINI_API_KEY in Cloudflare (your Worker → Settings → Variables and Secrets) and redeploy to search the web for jobs.' }, { status: 503 });
     try {
       const count = clampJobCount(input.count);
       const { data: existing } = await db.from('jobs').select('source_url').not('source_url', 'is', null).limit(2000);

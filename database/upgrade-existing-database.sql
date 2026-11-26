@@ -368,7 +368,7 @@ UPDATE public.students s SET show_results = 'show'
 WHERE coalesce(s.show_results, 'default') = 'default'
   AND EXISTS (SELECT 1 FROM public.registrations r WHERE r.approved_student_id = s.id AND r.notes ILIKE 'Quick-start%');
 
--- 8) Website server access (works with only the Brevo key + CRON_SECRET on Vercel).
+-- 8) Website server access (works with only the Brevo key + CRON_SECRET on Cloudflare).
 CREATE OR REPLACE FUNCTION public.register_server_key(_hash text, _label text DEFAULT '') RETURNS boolean
 LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
 BEGIN

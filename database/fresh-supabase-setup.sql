@@ -353,7 +353,7 @@ INSERT INTO public.user_roles (user_id, role)
 SELECT id, 'admin'::public.app_role FROM auth.users WHERE lower(email) = 'jobportalfreeofficial@gmail.com'
 ON CONFLICT DO NOTHING;
 
--- 8) Website server access (works with only the Brevo key + CRON_SECRET on Vercel).
+-- 8) Website server access (works with only the Brevo key + CRON_SECRET on Cloudflare).
 CREATE OR REPLACE FUNCTION public.register_server_key(_hash text, _label text DEFAULT '') RETURNS boolean
 LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
 BEGIN
