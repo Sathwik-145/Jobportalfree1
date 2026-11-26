@@ -7,6 +7,8 @@
  * The server falls back to the VITE_ values, so setting only those also works.
  * Browser-safe: this file contains no secrets.
  */
+import { cleanEnvValue, cleanSupabaseUrl } from "./supabase-env";
+
 function serverEnv(name: string): string {
   if (typeof window !== "undefined" || typeof process === "undefined") return "";
   return process.env[name] || "";
@@ -14,12 +16,12 @@ function serverEnv(name: string): string {
 
 /** Supabase project URL. */
 export function databaseUrl(): string {
-  return serverEnv("SUPABASE_URL") || import.meta.env.VITE_SUPABASE_URL || "";
+  return cleanSupabaseUrl(serverEnv("SUPABASE_URL") || import.meta.env.VITE_SUPABASE_URL || "");
 }
 
 /** Public (publishable / anon) key. */
 export function databaseKey(): string {
-  return serverEnv("SUPABASE_PUBLISHABLE_KEY") || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || "";
+  return cleanEnvValue(serverEnv("SUPABASE_PUBLISHABLE_KEY") || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || "");
 }
 
 /**
@@ -27,5 +29,5 @@ export function databaseKey(): string {
  * identifies itself with the CRON_SECRET header instead (see server-access.server.ts).
  */
 export function databaseServiceKey(): string {
-  return serverEnv("SUPABASE_SERVICE_ROLE_KEY");
+  return cleanEnvValue(serverEnv("SUPABASE_SERVICE_ROLE_KEY"));
 }

@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
+import { cleanEnvValue, cleanSupabaseUrl } from '@/lib/supabase-env';
 
 function isNewSupabaseApiKey(value: string): boolean {
   return value.startsWith('sb_publishable_') || value.startsWith('sb_secret_');
@@ -28,9 +29,10 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
 function createSupabaseClient() {
   const isBrowser = typeof window !== 'undefined';
   // Browser: values baked in at build time. Server: runtime variables, falling back to the build-time ones.
-  const SUPABASE_URL = import.meta.env['VITE_SUPABASE_URL'] || (!isBrowser ? process.env['SUPABASE_URL'] : undefined);
-  const SUPABASE_PUBLISHABLE_KEY =
-    import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY'] || (!isBrowser ? process.env['SUPABASE_PUBLISHABLE_KEY'] : undefined);
+  const SUPABASE_URL = cleanSupabaseUrl(import.meta.env['VITE_SUPABASE_URL'] || (!isBrowser ? process.env['SUPABASE_URL'] : undefined));
+  const SUPABASE_PUBLISHABLE_KEY = cleanEnvValue(
+    import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY'] || (!isBrowser ? process.env['SUPABASE_PUBLISHABLE_KEY'] : undefined),
+  );
 
   if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
     const missing = [
