@@ -56,6 +56,9 @@ export default defineConfig(({ command, mode }) => {
                 nodeCompat: true,
                 // Write wrangler.json so `wrangler deploy` works straight after the build.
                 deployConfig: true,
+                // Pin the Worker name so it always matches the Worker in the Cloudflare dashboard
+                // (otherwise it can be derived from the git repo name, and runtime secrets would not apply).
+                wrangler: { name: "jobportalfree" },
               },
             }),
           ]
