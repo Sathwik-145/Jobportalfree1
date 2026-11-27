@@ -143,7 +143,14 @@ export async function sendCredentialMails(opts: {
         await putSetting(db, PERSONAL_LOGIN_KEY, aliases);
       }
     } catch (e: any) { results.push({ id: st.id, name: st.name, email: to, ok: false, error: e.message }); continue; }
-    const vars = { name: st.name || "Student", email: loginEmail, password: st.password || "", loginUrl, ...examVars(examByStudent[st.id], startByStudent[st.id]) };
+    // Never send a login mail with an empty password: tell the admin why instead.
+    if (/\{\{\s*password\s*\}\}/.test(`${template} ${subject}`) && !st.password) {
+      results.push({ id: st.id, name: st.name, email: to, ok: false, error: hasServerKey() || serverAccessKey()
+        ? 'No saved password for this student. Open the student, set a password, then send again.'
+        : 'The server cannot read saved passwords yet. Add SUPABASE_SERVICE_ROLE_KEY in Cloudflare (Variables and Secrets), or add CRON_SECRET and link the server in Portal settings, then redeploy.' });
+      continue;
+    }
+    const vars = { name: st.name || "Student", email: loginEmail, password: st.password || "", loginUrl, ...(/^https?:\/\//i.test(loginUrl) ? { siteUrl: new URL(loginUrl).origin } : {}), ...examVars(examByStudent[st.id], startByStudent[st.id]) };
     const planned = opts.examsByStudent?.[st.id] || (examByStudent[st.id] ? [examByStudent[st.id]] : []);
     if (planned.some(id => !examMap[id])) {
       results.push({ id: st.id, name: st.name, email: to, ok: false, error: 'An assigned test no longer exists. Update the schedule.' }); continue;
