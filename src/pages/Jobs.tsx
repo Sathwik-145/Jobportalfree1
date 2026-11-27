@@ -34,6 +34,17 @@ const Jobs = () => {
     if (user) fetchSavedJobs();
   }, [user]);
 
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const el = e.target as HTMLElement;
+      if (e.key !== "/" || e.metaKey || e.ctrlKey || el.closest("input, textarea, select, [contenteditable]")) return;
+      e.preventDefault();
+      document.getElementById("job-search")?.focus();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   useEffect(() => { setPage(1); }, [search, jobType, expLevel, sortBy]);
 
   const fetchJobs = async () => {
@@ -100,7 +111,7 @@ const Jobs = () => {
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base">Search roles by title, company or skill, then narrow by job type and experience.</p>
           <div className="relative mt-6 max-w-2xl">
             <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-            <Input placeholder="Job title, company or skill" className="h-14 rounded-2xl border-primary/20 bg-card pl-12 text-base shadow-sm" value={search} onChange={(e) => setSearch(e.target.value)} />
+            <Input id="job-search" placeholder="Job title, company or skill (press / to focus)" className="h-14 rounded-2xl border-primary/20 bg-card pl-12 text-base shadow-sm" value={search} onChange={(e) => setSearch(e.target.value)} />
           </div>
           <dl className="mt-6 flex flex-wrap gap-3 text-sm">
             {[["Open roles", jobs.length], ["New this week", newThisWeek], ["Companies", companies]].map(([l, v]) => (

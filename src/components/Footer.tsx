@@ -71,7 +71,7 @@ const Footer = () => (
               <ul className="space-y-2 text-sm">
                 {c.links.map((l) => (
                   <li key={l.to}>
-                    <Link to={l.to} className="text-ink-foreground/85 hover:text-accent">{l.label}</Link>
+                    <Link to={l.to} className="link-grow text-ink-foreground/85 hover:text-accent">{l.label}</Link>
                   </li>
                 ))}
               </ul>

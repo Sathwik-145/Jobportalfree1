@@ -39,7 +39,7 @@ const JobCard = ({ job, isSaved = false, onToggleSave, showActions = true, match
 
   return (
     <Card
-      className="group h-full rounded-2xl bg-card shadow-sm hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 hover:-translate-y-1 border border-border/60 hover:border-primary/30 cursor-pointer"
+      className="group card-interactive h-full rounded-2xl bg-card shadow-sm border border-border/60 cursor-pointer"
       onClick={handleCardClick}
     >
       <CardContent className="p-5 sm:p-6">

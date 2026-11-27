@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import BackToTop from "@/components/BackToTop";
 import {
   Outlet,
   createRootRouteWithContext,
@@ -130,6 +131,7 @@ function RootComponent() {
             <Suspense fallback={<PageLoader />}>
               <Outlet />
             </Suspense>
+            <BackToTop />
           </AppProviders>
         </Suspense>
       ) : (

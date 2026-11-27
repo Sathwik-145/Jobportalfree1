@@ -9,14 +9,14 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow-[var(--shadow-glow)] hover:bg-primary/92 hover:-translate-y-px",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-input bg-card hover:border-primary/50 hover:bg-muted hover:text-foreground",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        default: "btn-shine bg-primary text-primary-foreground shadow-[var(--shadow-glow)] hover:bg-primary/92 hover:-translate-y-0.5 hover:shadow-[0_18px_34px_-14px_hsl(var(--primary)/0.65)]",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 hover:-translate-y-px hover:shadow-[0_14px_28px_-14px_hsl(var(--destructive)/0.7)]",
+        outline: "border border-input bg-card hover:-translate-y-px hover:border-primary/50 hover:bg-primary/5 hover:text-foreground hover:shadow-sm",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/85 hover:-translate-y-px hover:shadow-md",
         ghost: "hover:bg-muted hover:text-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        hero: "rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-glow)] hover:-translate-y-px hover:brightness-110",
-        accent: "rounded-full bg-accent text-accent-foreground shadow-[0_14px_30px_-14px_hsl(var(--accent)/0.8)] hover:-translate-y-px hover:brightness-105",
+        hero: "btn-shine rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-glow)] hover:-translate-y-0.5 hover:brightness-110 hover:shadow-[0_20px_40px_-14px_hsl(var(--primary)/0.7)]",
+        accent: "btn-shine rounded-full bg-accent text-accent-foreground shadow-[0_14px_30px_-14px_hsl(var(--accent)/0.8)] hover:-translate-y-px hover:brightness-105",
         ink: "bg-ink text-ink-foreground hover:bg-ink/90",
         soft: "bg-primary/10 text-primary hover:bg-primary/15",
       },
