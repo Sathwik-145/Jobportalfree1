@@ -58,7 +58,7 @@ export default defineConfig(({ command, mode }) => {
                 deployConfig: true,
                 // Pin the Worker name so it always matches the Worker in the Cloudflare dashboard
                 // (otherwise it can be derived from the git repo name, and runtime secrets would not apply).
-                wrangler: { name: "jobportalfree" },
+                wrangler: { name: "jobportalfree", keep_vars: true },
               },
             }),
           ]
