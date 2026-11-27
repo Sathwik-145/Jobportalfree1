@@ -69,6 +69,12 @@ function AssistantChat() {
           <p className="mb-2 text-xs font-semibold text-muted-foreground">{message.role === 'user' ? 'You' : 'Admin AI'}</p>
           {message.parts.map((part, i) => {
             if (part.type === 'text') return <div key={i} className="prose prose-sm max-w-none break-words text-foreground dark:prose-invert"><ReactMarkdown>{part.text}</ReactMarkdown></div>;
+            if ((part.type === 'tool-draft_questions' || part.type === 'tool-rewrite_email') && part.state === 'output-error') {
+              return <p key={i} role="alert" className="my-2 rounded-lg border border-destructive p-3 text-sm text-destructive">{part.errorText || 'The AI request failed. Please try again.'}</p>;
+            }
+            if (part.type === 'tool-draft_questions' && part.state === 'output-available' && typeof (part.output as any)?.error === 'string') {
+              return <p key={i} role="alert" className="my-2 rounded-lg border border-destructive p-3 text-sm text-destructive">{(part.output as any).error}</p>;
+            }
             if (part.type === 'tool-draft_questions' && part.state === 'output-available') {
               const parsed = draftSchema.safeParse(part.output);
               return parsed.success ? <DraftBatch key={i} questions={parsed.data.questions} /> : <p key={i}>The draft was invalid. Please ask me to try again.</p>;
